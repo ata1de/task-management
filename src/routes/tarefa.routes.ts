@@ -12,6 +12,7 @@ const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => P
 router.post('/tarefas', asyncHandler((req, res) => tarefaController.criar(req, res)));
 router.get('/tarefas', asyncHandler((req, res) => tarefaController.listar(req, res)));
 router.get('/tarefas/:id', asyncHandler((req, res) => tarefaController.buscarPorId(req, res)));
+router.get('/tarefas/:status', asyncHandler((req, res) => tarefaController.buscarPorStatus(req, res)));
 router.put('/tarefas/:id', asyncHandler((req, res) => tarefaController.atualizar(req, res)));
 router.delete('/tarefas/:id', asyncHandler((req, res) => tarefaController.deletar(req, res)));
 

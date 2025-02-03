@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { TarefaService } from '../services/tarefa.service';
-import { TarefaSchema } from '../schemas/tarefa.schema';
+import { TarefaSchema, TarefaSchemaStatus } from '../schemas/tarefa.schema';
 
 const tarefaService = new TarefaService();
 
@@ -34,6 +34,27 @@ export class TarefaController {
     try {
       const id = parseInt(req.params.id);
       const tarefa = await tarefaService.buscarPorId(id);
+
+      if (!tarefa) {
+        return res.status(404).json({ error: 'Tarefa não encontrada' });
+      }
+
+      return res.json(tarefa);
+    } catch (error) {
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  }
+
+  async buscarPorStatus(req: Request, res: Response) {
+    try {
+      const status = req.params.status;
+      const validacao = TarefaSchemaStatus.safeParse(req.body);
+
+      if (!validacao.success) {
+        return res.status(400).json({ errors: validacao.error.errors });
+      }
+
+      const tarefa = await tarefaService.buscarPorStatus(status);
 
       if (!tarefa) {
         return res.status(404).json({ error: 'Tarefa não encontrada' });

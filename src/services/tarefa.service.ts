@@ -28,6 +28,12 @@ export class TarefaService {
     });
   }
 
+  async buscarPorStatus(status: string) {
+    return await prisma.tarefa.findMany({
+      where: { status }
+    });
+  }
+
   async atualizar(id: number, data: Partial<TarefaInput>) {
     return await prisma.tarefa.update({
       where: { id },
